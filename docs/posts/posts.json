@@ -1,14 +1,14 @@
 [
   {
     "path": "posts/2022-01-24-welcone/",
-    "title": "welcome",
+    "title": "Hello!",
     "description": {},
     "author": [],
-    "date": "2022-02-06",
+    "date": "2022-02-07",
     "categories": [],
     "contents": "\nWelcome to my new personal website! I look forward to sharing my projects and research interests with you here.\n\n\n\n",
     "preview": {},
-    "last_modified": "2022-02-06T20:59:42-08:00",
-    "input_file": "welcone.knit.md"
+    "last_modified": "2022-02-07T13:09:56-08:00",
+    "input_file": {}
   }
 ]
