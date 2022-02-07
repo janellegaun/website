@@ -3,24 +3,23 @@
     {
       "path": "about.html",
       "title": "About this site",
-      "description": "Some additional details about the website",
       "author": [],
-      "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-01-24T16:33:52-08:00"
+      "contents": "\n\nMy interests lie in finding actionable projects that move the needle on water supply security in the western United States. Building on a background in field hydrology, I hope to bridge the gap between scientist, users and managers to protect our water resources.\nIn have leveraged my technical experience with R, Modflow and ArcGIS with a strong emphasis on communication and relationship building to accelerate private investment in public resources.\nWhen I’m not behind the screen, you’ll catch me soaking in the sun exploring the dusty corners of the southwest.\n\n\n\n",
+      "last_modified": "2022-02-06T20:57:12-08:00"
     },
     {
       "path": "blog.html",
       "title": "Blog",
       "author": [],
-      "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2022-01-24T16:33:53-08:00"
+      "contents": "\n\n\n\n",
+      "last_modified": "2022-02-06T20:28:06-08:00"
     },
     {
       "path": "index.html",
       "title": "Janelle Gaun",
       "author": [],
-      "contents": "\r\n\r\n          \r\n          \r\n          mfeo\r\n          \r\n          \r\n          Home\r\n          About\r\n          Blog\r\n          ☰\r\n          \r\n          \r\n      \r\n        \r\n          \r\n            \r\n              \r\n            \r\n              Janelle Gaun\r\n            \r\n            \r\n              \r\n                \r\n                    \r\n                      \r\n                        LinkedIn\r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        Twitter\r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        GitHub\r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        Email\r\n                      \r\n                    \r\n                  \r\n                                  \r\n            \r\n          \r\n        \r\n        \r\n        \r\n          \r\n            Water wonk exploring water from the fresh perspective of coding\r\n          \r\n        \r\n      \r\n    \r\n\r\n    \r\n      \r\n        \r\n          \r\n            \r\n              \r\n            \r\n              Janelle Gaun\r\n            \r\n            \r\n              \r\n                \r\n                                    \r\n                    \r\n                      LinkedIn\r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      Twitter\r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      GitHub\r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      Email\r\n                    \r\n                  \r\n                                  \r\n              \r\n            \r\n            \r\n              Water wonk exploring water from the fresh perspective of coding\r\n            \r\n        \r\n      \r\n    \r\n\r\n    \r\n    \r\n    ",
-      "last_modified": "2022-01-24T16:33:53-08:00"
+      "contents": "\n\n          \n          \n          mfeo\n          \n          \n          Home\n          About\n          Blog\n          ☰\n          \n          \n      \n        \n          \n            \n              \n            \n              Janelle Gaun\n            \n            \n              \n                \n                    \n                      \n                        LinkedIn\n                      \n                    \n                  \n                                    \n                    \n                      \n                        GitHub\n                      \n                    \n                  \n                                    \n                    \n                      \n                        Email\n                      \n                    \n                  \n                                  \n            \n          \n        \n        \n        \n          \n            Water wonk exploring freshwater through the fresh perspective of coding\n          \n        \n      \n    \n\n    \n      \n        \n          \n            \n              \n            \n              Janelle Gaun\n            \n            \n              \n                \n                                    \n                    \n                      LinkedIn\n                    \n                  \n                                    \n                    \n                      GitHub\n                    \n                  \n                                    \n                    \n                      Email\n                    \n                  \n                                  \n              \n            \n            \n              Water wonk exploring freshwater through the fresh perspective of coding\n            \n        \n      \n    \n\n    \n    \n    ",
+      "last_modified": "2022-02-06T20:35:43-08:00"
     }
   ],
   "collections": ["posts/posts.json"]

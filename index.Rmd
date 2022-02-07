@@ -1,18 +1,16 @@
 ---
 title: "Janelle Gaun"
-image: "Gaun_Janelle_MESM_22 Bren_001_reduced.jpg"
+image: "Gaun_Janelle_MESM 22_Bren_001_reduced.jpg"
 links:
   - label: LinkedIn
     url: "https://linkedin.com/"
-  - label: Twitter
-    url: "https://twitter.com/"
   - label: GitHub
-    url: "https://github.com/"
+    url: "https://github.com/janellegaun"
   - label: Email
-    url: "mailto:email@email.com"
+    url: "jgaun@bren.ucsb.edu"
 site: distill::distill_website
 output:
   postcards::trestles
 ---
  
- Water wonk exploring water from the fresh perspective of coding
+ Water wonk exploring freshwater through the fresh perspective of coding

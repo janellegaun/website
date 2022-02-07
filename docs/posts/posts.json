@@ -2,18 +2,13 @@
   {
     "path": "posts/2022-01-24-welcone/",
     "title": "welcome",
-    "description": "A short description of the post.",
-    "author": [
-      {
-        "name": "Unknown",
-        "url": {}
-      }
-    ],
-    "date": "2022-01-24",
+    "description": {},
+    "author": [],
+    "date": "2022-02-06",
     "categories": [],
-    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "contents": "\nWelcome to my new personal website! I look forward to sharing my projects and research interests with you here.\n\n\n\n",
     "preview": {},
-    "last_modified": "2022-01-24T15:37:16-08:00",
-    "input_file": {}
+    "last_modified": "2022-02-06T20:59:42-08:00",
+    "input_file": "welcone.knit.md"
   }
 ]

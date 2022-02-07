@@ -1,10 +1,19 @@
 ---
-title: "About this site"
-description: |
-  Some additional details about the website
+title: "About me"
+image: "tucson.jpg"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+<img src="tucson.jpg" style="width:100%">
+
+My interests lie in finding actionable projects that move the needle on water supply security in the western United States. Building on a background in field hydrology, I hope to bridge the gap between scientist, users and managers to protect our water resources. 
+
+In have leveraged my technical experience with R, Modflow and ArcGIS with a strong emphasis on communication and relationship building to accelerate private investment in public resources. 
+
+When I'm not behind the screen, you'll catch me soaking in the sun exploring the dusty corners of the southwest. 
+
+
 
