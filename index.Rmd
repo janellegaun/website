@@ -13,4 +13,4 @@ output:
   postcards::trestles
 ---
  
- Water wonk exploring freshwater through the fresh perspective of coding!
+ Tying technical expertise to communication for a fresh take on freshwater!
