@@ -1,0 +1,102 @@
+---
+title: "Time Series: Mono Lake"
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = F)
+library(tidyverse)
+library(here)
+library(janitor)
+library(GGally) 
+library(broom)
+library(kableExtra)
+library(stargazer)
+library(effsize)
+library(beeswarm)
+```
+
+```{r}
+#load data
+lake_levels <- read_csv(here("mono_lake_annual_levels.csv"), skip = 5) %>% 
+  clean_names()
+```
+
+
+```{r, fig.width=10}
+ggplot(lake_levels, aes(x= year, y= lake_level_feet_above_sea_level))+
+  geom_line()+
+  scale_x_continuous(limits = c(1850,2017),
+                     breaks = seq(1850, 2017, 20) )+
+  coord_cartesian(xlim =c(1850, 2017))+
+    labs(y = "Lake Surface Elevation (ft)",
+       title = "Mono Lake, CA Surface Level and Critical Ecological Thresholds \n (1850-2017) ")+
+  geom_hline(yintercept= 6377.0, #land bridge level
+             linetype = "dashed")+
+  annotate(geom = "text",
+           size = 3,
+           x = 1850,
+           y = 6378.2,
+           label = "Land Bridges Emerge (6,377 ft)",
+           hjust = "left")+
+  geom_hline(yintercept= 6360.0,
+             linetype = "dashed")+ #Salinity impacts on brine shrimp
+  annotate(geom = "text",
+           size = 3,
+           x = 1850,
+           y = 6361.2,
+           label = "Critical Salinity Level (6,260 ft)",
+           hjust = "left")+
+    geom_hline(yintercept= 6392.0,  #critical lake level set by decision 1631
+             color = "blue")+
+  annotate(geom = "text",
+           size = 3,
+           x = 1850,
+           y = 6393.2,
+           label = "Target Lake Level (6,392 ft)",
+           hjust = "left")+
+   annotate(         #diversion begin 
+    geom = "curve",
+    x = 1954, 
+    y = 6424.00, 
+    xend = 1943, 
+    yend = 6418.40, 
+    curvature = .3, 
+    arrow = arrow(length = unit(1, "mm")))+
+  annotate(geom = "text",
+           size = 3,
+           x = 1954, 
+           y = 6424.00, 
+           label = "Diversions \nBegin (1941)", 
+           hjust= "left") +
+   annotate(            #1994 Decision 1631
+    geom = "curve",
+    x = 1987, 
+    y = 6370.00, 
+    xend = 1994, 
+    yend = 6374.00, 
+    curvature = .3, 
+    arrow = arrow(length = unit(1, "mm"))
+  ) +
+  annotate(geom = "text",
+           size = 3,
+           x = 1987, 
+           y = 6366.00, 
+           label = "Target Lake\nLevel Declared\n(1994)", 
+           hjust= "right")+
+  theme_minimal()+
+  theme(plot.title = element_text(hjust=0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 3, b = 0, l =0)),
+        axis.title.x = element_blank(),
+        axis.line= element_line(size = 1))
+  
+```
+
+**Figure 1**: The figure depicts the water levels in Mono Lake (CA) from 1850- 2017 and the lake levels of three critical thresholds: the state-determined target to meet ecological function, the emergence of land bridges that connect lake islands to the shore, and salinity concentrations that limit brine shrimp. Also noted are the dates of LA water diversions (1941) and the declaration of a minimum lake level by the State Water Resources Control Board (1994). Data: 
+library(ggpubr)
+```
+
+
