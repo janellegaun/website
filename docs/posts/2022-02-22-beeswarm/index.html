@@ -109,7 +109,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","output","date"]}},"value":[{"type":"character","attributes":{},"value":["Example Report: Statistical Exploration and Linear Modeling"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["02-22-2022"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","output","date"]}},"value":[{"type":"character","attributes":{},"value":["Example Report: Statistical Exploration and Linear Modeling"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","code_folding"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"character","attributes":{},"value":["hide"]}]}]},{"type":"character","attributes":{},"value":["02-22-2022"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2097,6 +2097,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div class="d-article">
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span>, warning <span class='op'>=</span> <span class='cn'>FALSE</span>, message <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
@@ -2113,6 +2117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <span class='va'>bonanza_hares</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"bonanza_hares.csv"</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 </div>
 <h2 id="introduction">1. Introduction</h2>
 <p>In this report, I conduct a preliminary analysis of juvenile snowshoe hare (<em>Lepus americanus</em>) observations collected in the Tanana Valley of Bonanza Creek Experimental Forest between 1999 and 2012 (Kielland et al. 2017). This analysis compares body weight between three collection sites (Black Fir, Mature and Riparian) and sex, and explores the relationship between weight (g) and hind foot length (mm).</p>
@@ -2122,6 +2127,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <h2 id="preliminary-results">3. Preliminary Results</h2>
 <h3 id="a.-annual-trap-counts">A. Annual Trap Counts</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Create the juvenile hares dataset and parse the dates to call the years</span>
 <span class='va'>juvi_hares</span><span class='op'>&lt;-</span> <span class='va'>bonanza_hares</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
@@ -2148,12 +2157,17 @@ document.addEventListener('DOMContentLoaded', function() {
         plot.caption <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <p><img src="beeswarm_files/figure-html5/annual%20trap%20counts-1.png" width="624" /></p>
 </div>
 <p><em>Figure 1.</em> Juvenile snowshoe hare observations at Bonanza Creek Experimental forest trap sites. Although trapping occurred in 2002 and 2009, there were no observations of juvenile hares in those years. Data: Kielland et al. 2017.</p>
 <p>The highest number of observations of juvenile snowshoe hares occurred in 1999 (n = 126) and the lowest occurred in 2002 and 2010 (n=0) when no observations of juvenile hares were made though there are observations of hares without age recorded (NA). The mean count was 29 observations. The number of juvenile observations is generally decreasing from 1999 to 2012. To standardize the observations across the years, future analysis should divide the number of total observations by the annual trap days (total sum of days each trap was set) to standardize the observations for the amount of effort each year.</p>
 <h3 id="b.-juvenile-hare-weight-comparison-data-visualization">B. Juvenile Hare Weight Comparison (Data Visualization)</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'>#Code drawn heavily from Allison's example </span>
 
@@ -2173,6 +2187,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>plot.caption <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <p><img src="beeswarm_files/figure-html5/juvenile%20comp%20final%20plot-1.png" width="624" /></p>
 </div>
 <p><em>Figure 2.</em> Weight (g) of male, female, and unrecorded sex (NA) juvenile snowshoe hares. Observations at three collection sites in Bonanza Creek Experiemental Forest between 1999 and 2012. Red (female) and blue (male) points represent individual observations. Black dots indicate the mean, central black lines indicate the median and the edges of the box represent the 25th and 75th percentiles. Data: Kielland et al. 2017. Code: Horst 2020.”</p>
@@ -2180,6 +2195,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <h3 id="c.-juvenile-hare-weight-and-sex-comparison-statistical">C. Juvenile Hare Weight and Sex Comparison (Statistical)</h3>
 <p><em>Table 1.</em> Summary statistics (mean, median, standard deviation and sample size) for male and female juvenile hares observations collected via trap sampling in Bonanza Creek Experimental Forest. Data: Kielland et al. 2017.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>summary_stats</span> <span class='op'>&lt;-</span> <span class='va'>juvi_hares</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>sex</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
@@ -2195,6 +2214,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kable_styling</a></span><span class='op'>(</span>bootstrap_options <span class='op'>=</span> <span class='st'>"striped"</span>, full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2273,6 +2293,10 @@ NA
 <p>Weight (g) of male and female juvenile hares appears normally distributed. Weights of male and female hares were compared with a two-sample t-test. With an actual difference in means of 90.5 grams and p-value of 0.007, the weight of male snowshoe hares (945.86 <span class="math inline">\(\pm\)</span> 333.22 g, <em>n</em> = 163; mean <span class="math inline">\(\pm\)</span> 1 standard deviation) and female snowshoe hares(855.39 <span class="math inline">\(\pm\)</span> 292.25 g, <em>n</em> = 200; mean <span class="math inline">\(\pm\)</span> 1 standard deviation) is significant (Table 1). The sample effect size was small (Cohen’s <em>d</em> = -0.29).</p>
 <h3 id="d.-weight-and-hind-foot-length-relationship">D. Weight and Hind Foot Length Relationship</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>juvi_hares</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>weight</span>, 
@@ -2281,12 +2305,17 @@ NA
         y <span class='op'>=</span> <span class='st'>"Hind Foot Length (mm)"</span><span class='op'>)</span>
 </code></pre>
 </div>
+</details>
 <p><img src="beeswarm_files/figure-html5/weight%20v.%20foot%20length%20scatterplot-1.png" width="624" /></p>
 </div>
 <p><em>Figure 3.</em> Weight (g) and hind foot length (mm) of juvenile snowshoe hares (n=378) in across all three sampling sites in Bonanza Creek Experimental Forest between 1999 and 2012. Data: Kielland et al. 2017.</p>
 <p>Distribution of weight(g) compared to hind foot length (mm) of juvenile hares (Figure 3) may be linear to follow a linear trend. Variance is high and there is not an apparent linear trend.</p>
 <h3 id="e.-weight-and-foot-length-linear-regression">E. Weight and Foot Length Linear Regression</h3>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>juvi_hares</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>
   x <span class='op'>=</span> <span class='va'>weight</span>,
@@ -2305,6 +2334,7 @@ NA
   <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/stat_regline_equation.html'>stat_regline_equation</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'>#can specify location of equation on chart</span>
 </code></pre>
 </div>
+</details>
 <p><img src="beeswarm_files/figure-html5/linear%20reg-1.png" width="624" /></p>
 </div>
 <p><em>Figure 4.</em> Linear regression model fit for juvenile snowshoe hare weight (g) and hind foot length (mm). Data: Kielland et al. 2017.</p>

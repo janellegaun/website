@@ -3,6 +3,7 @@ title: "Time Series: Mono Lake"
 output:
   distill::distill_article:
     self_contained: false
+    code_folding: hide
 ---
 
 

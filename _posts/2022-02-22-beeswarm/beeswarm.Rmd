@@ -3,7 +3,9 @@ title: "Example Report: Statistical Exploration and Linear Modeling"
 output:
   distill::distill_article:
     self_contained: false
+    code_folding: hide
 ---
+
 
 
 ```{r setup, include=TRUE}
