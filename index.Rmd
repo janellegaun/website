@@ -8,6 +8,7 @@ links:
     url: "https://github.com/janellegaun"
   - label: Email
     url: "jgaun@bren.ucsb.edu"
+  - label: <a href = 'gaun_resume.pdf' target = '_blank'>Resume</a>
 site: distill::distill_website
 output:
   postcards::trestles
