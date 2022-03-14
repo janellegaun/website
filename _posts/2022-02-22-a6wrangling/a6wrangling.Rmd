@@ -22,7 +22,7 @@ library(beeswarm)
 
 ```{r}
 #load data
-lake_levels <- read_csv(here("mono_lake_annual_levels.csv"), skip = 5) %>% 
+lake_levels <- read_csv(here("data", "mono_lake_annual_levels.csv"), skip = 5) %>% 
   clean_names()
 ```
 
