@@ -1,0 +1,180 @@
+---
+title: "Star Wars IV: A New Hope Text Analysis"
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: hide
+---
+
+```{r setup, include=TRUE, warning= FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(here)
+library(tidytext) #functions for sentiment analysis
+library(textdata)
+library(pdftools)
+library(wordcloud2) #generate wordcloud
+library(ggdark) #mark dark backgrounds in ggplot
+library(plotly)
+```
+
+###  **Overview:** 
+This post explores work frequency and sentiment in the script of Star Wars Episode IV: A New Hope and visualized using a plot and a wordcloud. A sentiment analysis using the "bing" lexicon is then used to determine the mean sentiment per page. Sentiment is plotted with key plots points. 
+
+
+
+```{r data wrangling for text analysis}
+sw_script <- pdf_text(here("data", "starwars_fourth3_76.pdf"))
+
+#each row is a page (148 pages overall) so break into pages and lines of text
+sw_script <- as.data.frame(sw_script) %>% 
+  mutate(page = 1:n()) %>% 
+  mutate(full_text = str_split(sw_script, pattern = "\\n")) %>%  #
+  unnest(full_text) %>% 
+  mutate(full_text = str_squish(full_text)) 
+  
+#make words into the token
+ sw_words <- sw_script %>% 
+ #switched into one row per word and converted it into lower case
+  unnest_tokens(word, full_text, token = "words") %>%  
+  select(-sw_script)
+
+ x <- stop_words
+ 
+#remove stopwords removed
+sw_clean<- sw_words %>% 
+  anti_join(stop_words, by = "word") %>% 
+  filter(word != "int") %>% #stage word in script
+  filter(word != "ext") 
+
+#word frequency for whole document
+sw_wordcount <- sw_clean %>% #stage word in script
+  count(word)
+
+#wordcount by page
+sw_wordcount_page<- sw_clean %>% 
+  group_by(page) %>% 
+  count(word) %>% 
+  ungroup()
+
+```
+ 
+
+## Word Frequency Analysis
+
+```{r visualize top 20 words}
+#for figure
+top_20_words <- sw_wordcount %>% 
+  arrange(-n) %>% 
+  slice(1:20)
+
+#for wordcloud
+top_100_words <- sw_wordcount %>% 
+  arrange(-n) %>% 
+  slice(1:100)
+
+#figure
+ggplot(top_20_words, aes(x= n,  y= reorder(word, n)))+
+  geom_bar(stat = "identity", fill = "#999999")+
+  dark_theme_classic()+
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))+
+  labs(title = "Star Wars Episode IV: New Hope",
+       subtitle = "Script Word Frequency Analysis",
+       y = "Top 20 Words",
+       x = "Word Frequency")
+
+```
+
+###### *Figure 1:* Top 20 words in used in the 'A New Hope' script arranged in descending order. Data: Star Wars IV: A New Hope (Revised Fourth Draft). 
+
+
+```{r wordcloud, fig.width= 5}
+#changes the background colour of the plot with black 
+wordcloud2(data=top_100_words,
+           size = 1.2,
+           color = 'random-light',
+           backgroundColor = 'Black')
+```
+
+###### *Figure 2:* Wordcloud displaying the top 100 most frequently used words in the A New Hope script. Size corresponds to frequency in the text. Stop words have been removed. Data: Star Wars IV: A New Hope (Revised Fourth Draft). 
+
+
+
+
+
+
+## Sentiment Analysis 
+
+```{r, results= FALSE}
+get_sentiments(lexicon = "bing")
+```
+
+```{r sentiment analysis }
+#sentiment analysis using bing lexicon
+#sentiment analysis 
+sw_afinn <- sw_clean %>% 
+  inner_join(get_sentiments("afinn"), by = "word")
+
+# Find the mean afinn score by page: 
+afinn_means <- sw_afinn %>% 
+  group_by(page) %>% 
+  summarize(mean_afinn = mean(value))
+
+ggplot(data = afinn_means, 
+       aes(x = page,
+           y = mean_afinn)) +
+  geom_col() +
+  ylim(-2, 2)+
+  coord_flip()+
+  dark_theme_classic()+
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))+
+  labs(title = "Star Wars Episode IV: New Hope",
+       subtitle = "Script Sentiment Analysis",
+       y = "Mean Sentiment Score",
+       x = "Page No.")+ 
+  #darth vader entrance
+  geom_curve(x = 15, y = -2,
+             xend = 2, yend = -1.78,
+            color = 2,
+            size = .5,
+            arrow = arrow(type = "closed", length=unit(2, "mm")),
+            lwd=10)+
+    annotate("text", 
+             x=20, 
+             y=-2, 
+           label='Darth Vader \n Entrance',
+           size = 2) +
+  #hatch Leia rescue plan
+    geom_curve(x = 60, y = 1.5,
+             xend = 73, yend = 1.37,
+            color = 2,
+            size = .5,
+            arrow = arrow(type = "closed", length=unit(2, "mm")),
+            lwd=10)+
+    annotate("text", 
+             x=54, 
+             y=1.5, 
+           label='Hatch Plan to \n Rescue Leia',
+           size = 2)+
+  #in the garbage compactor
+      geom_curve(x = 100, y = -1.78,
+             xend = 87, yend = -2.0,
+            color = 2,
+            size = .5,
+            arrow = arrow(type = "closed", length=unit(2, "mm")),
+            lwd=10)+
+      annotate("text", 
+             x= 98, 
+             y=-1.57, 
+           label='In the Garbage \n Compactor',
+           size = 2)
+
+```
+
+###### *Figure 3:* Sentiment analysis for Star Wars Episode IV: A New Hope by page in script using Bing lexicon to code words from most negative (-2) to most positive (2). Figure displays mean sentiment score by page. Data: Star Wars IV: A New Hope (Revised Fourth Draft). 
+
+
+*Data:* Lucas, George.*Star Wars Episode IV: A New Hope (Revised Fourth Draft)*. https://maddogmovies.com/almost/scripts/starwars_fourth3_76.pdf
