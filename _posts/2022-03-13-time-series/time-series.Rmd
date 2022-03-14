@@ -1,0 +1,257 @@
+---
+title: "Time Series"
+description: |
+  Using 'feasts' to explore time series data
+date: 2022-03-13
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: hide
+---
+
+```{r setup, include=TRUE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning= FALSE, message = FALSE)
+library(tidyverse)
+library(janitor)
+library(here)
+library(rmdformats)
+library(patchwork)
+
+#for timeseries
+library(lubridate) #dealing with dates
+library(tsibble)
+library(feasts) #dealing with time series
+library(slider)
+library(RColorBrewer)
+```
+
+```{r load and clean data}
+#clean names and keep only the date column and the counts containing steelhead, coho and jack coho counts
+fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
+  clean_names() %>% 
+  select(date, steelhead, coho, jack_coho) %>% 
+  
+#change counts less than 0 to 0 
+  mutate(steelhead = case_when(steelhead< 0 ~ 0, 
+                               TRUE ~ steelhead)) %>% 
+   mutate(coho = case_when(coho< 0 ~ 0, 
+                               TRUE ~ coho)) %>% 
+  mutate(jack_coho = case_when(jack_coho< 0 ~ 0, 
+                               TRUE ~ jack_coho))
+
+```
+
+# Overview 
+This report explores fish passage counts of Coho salmon (*Oncorhynchus kisutch*) and Steelhead salmon (*Oncorhynchus mykiss*) at Willemette Falls for a ten year period beginning Jan 1, 2000. The Willamette Falls in Oregon are the site of a a large hydropower facility with a fish passage structure to facilitate migration along the river. The report looks at annual and seasonal trends in Steelhead, Coho, and jack Coho passage through Willamette Falls. Jacks are male salmon that return to spawn a year earlier than other adult Coho salmon. 
+
+<font size = "5"> **Data:** </font size = "5"> Columbia River Basin Data Access in Real Time. Adult Passage (database). Accessed: March 8, 2022.  http://www.cbr.washington.edu/dart/query/adult_graph_text
+
+
+# Data Analysis
+
+### Original Time Series
+
+- Coho salmon counts are increasing with time though jack salmon counts appear to be remaining stable
+
+- Coho salmon appear to pass through the fish passage approx. once a year during a discreet period
+
+- Steelhead salmon have much less discrete time periods when they move through the fish passage though they appear to have a seasonal trend
+
+```{r create timeseries data}
+#change date column from 'character' to 'mdy' format date
+
+fish_ts <- fish %>% 
+  mutate(date = lubridate::mdy(date)) %>% 
+   as_tsibble(key = NULL, index = date)
+
+#change NA to 0 in the dataset
+fish_ts[is.na(fish_ts)]= 0
+```
+
+```{r plot timeseries}
+#plot steelhead
+sh_ts <- ggplot(data = fish_ts, aes(x = date)) +
+  geom_line(aes(y = steelhead), color = "#999999")+
+  labs(x = "",
+       y = "Daily Count",
+       title = "Steelhead salmon", 
+       color = "")+
+  theme_classic()+
+  theme(plot.title = element_text(hjust = 0.5))
+
+#plot coho (adult and jack)
+co_ts <- ggplot(data = fish_ts, aes(x = date)) +
+  geom_line(aes(y = coho), color = "#00AFBB") +
+  geom_line(aes(y = jack_coho), color = "#C4961A") +
+  labs(x = "Date",
+       y = "Daily Count",
+       title = "Coho salmon",
+       color = "Type")+
+ ylab("")+
+  theme_classic()+
+  theme(plot.title = element_text(hjust = 0.5))
+
+#plot together with patchwork
+sh_ts/co_ts
+```
+###### *Fig 1:* Daily count of Steelhead and Coho salmon at Willamette falls fish passage in Oregon between January 1, 2000 and Dec 31, 2010. Coho salmon show counts of jack salmon (yellow) which return one year earlier than other adult salmon (blue) to spawn. Y-axis are different scales (Data: Columbia River DART) 
+
+
+### Seasonpolots 
+
+- Steelhead salmon move through the fish passage in spring and early summer and have a much longer period of travel along the river 
+
+- Coho and jack Coho salmon migrate through the fish passage in late summer. Fish passage counts peak in September. 
+
+- Coho salmon appear to be more abundant in later years of the observation period
+
+```{r seasonplots}
+#create seasonal datasets
+coho_month <- fish_ts %>% 
+  index_by(yr_mo = ~yearmonth(.)) %>% #equivalent of doing group_by for normal dataframe
+  #dot shows to apply to this dataset
+  summarize(mean = mean(coho, na.rm = TRUE)) 
+
+cohoj_month <- fish_ts %>% 
+  index_by(yr_mo = ~yearmonth(.)) %>% #equivalent of doing group_by for normal dataframe
+  #dot shows to apply to this dataset
+  summarize(mean = mean(jack_coho, na.rm = TRUE)) 
+
+sh_month <- fish_ts %>% 
+  index_by(yr_mo = ~yearmonth(.)) %>% #equivalent of doing group_by for normal dataframe
+  #dot shows to apply to this dataset
+  summarize(mean = mean(steelhead, na.rm = TRUE)) 
+
+#plot seasonal datasets
+#coho
+month_coho <- coho_month %>% 
+  gg_season(y = mean, pal = brewer.pal(10, name ="Spectral")) + 
+  labs(title = "Coho ",
+       x = "",
+       y = "") +
+  theme_classic()+
+  theme(plot.title = element_text(hjust = 1),
+        legend.position = "none")+ 
+  scale_y_continuous(breaks =seq(0, 500, by = 250))
+
+#jack coho
+month_cohoj <- cohoj_month %>% 
+   gg_season(y = mean, pal = brewer.pal(10, name ="Spectral"))+ 
+ labs(title = "Jack Coho",
+       x = "Month",
+       y = "")+
+  theme_classic()+
+  theme(plot.title = element_text(hjust = 1),
+        legend.position = "bottom")+
+  guides(color = guide_legend(nrow = 1, byrow = TRUE))+
+  scale_y_continuous(breaks =seq(0, 60, by = 30))
+
+#steelhead
+month_sh <- sh_month %>% 
+    gg_season(y = mean, pal = brewer.pal(10, name ="Spectral"))+
+   labs(title = "Steelhead",
+       x = "",
+       y = "")+
+  theme_classic()+
+  theme(plot.title = element_text(hjust = 1),
+        legend.position = "none")+
+  scale_y_continuous(breaks =seq(0, 500, by = 250), limits = c(0, 500))
+
+ylab <- "Average Monthly Fish Count"
+
+#aggregate into one plot
+month_sh/month_coho/month_cohoj + 
+  plot_layout(heights = c(5, 5, 5)) + 
+  plot_annotation(
+    title = 'Monthy Fish Passage Count, 2000-2010',
+    theme = theme(plot.title = element_text(size = 14, hjust = 0.5)))
+grid::grid.draw(grid::textGrob(ylab, x = 0.02, rot = 90))
+```
+###### *Fig 2:* Mean monthly count of Steelhead, Coho and jack Coho salmon at the Willamette Falls fish passage between 1/1/2000 and 12/31/2010. Note that the y-axis scale of jack Coho is different than the other two (Data: Columbia River DART) 
+
+### Annual Count by species 
+
+- Coho salmon counts significantly increased in 2009 and 2010 though futher analysis will be needed to understand if this is a long-term trend
+
+- Annual jack Coho counts appear to have a cyclical pattern 
+
+- Steelhead salmon populations remained steady from 2000-2010 and experienced no significant changes in population over the 10 year period
+
+```{r annual counts}
+#wrnagle data 
+#coho
+coho_annual <- fish_ts %>% 
+  index_by(yearly = ~year(.)) %>% 
+  summarize(sum = sum(coho, na.rm = TRUE))
+
+#jack coho
+cohoj_annual <- fish_ts %>% 
+  index_by(yearly = ~year(.)) %>% 
+  summarize(sum = sum(jack_coho, na.rm = TRUE))
+
+#steelhead
+sh_annual <- fish_ts %>% 
+  index_by(yearly = ~year(.)) %>% 
+  summarize(sum = sum(steelhead, na.rm = TRUE))
+```
+
+
+```{r plots}
+
+#steelhead
+p1<- ggplot(sh_annual, aes(x = yearly, y = sum)) +
+  geom_line(color = "#999999", fill = "#999999")+
+  
+  scale_x_continuous(breaks = seq(2000, 2010, 1))+
+  scale_y_continuous(breaks = seq(0, 60000, 20000), limits = c(0, 60000))+
+  theme_classic()+   
+  labs(title = "Steelhead",
+       x = "",
+       y = "")+
+  theme(plot.title = element_text(hjust = 1),
+        legend.position = "none")
+
+#Coho
+p2<- ggplot(coho_annual, aes(x = yearly, y = sum)) +
+  geom_line(color = "#00AFBB", fill = "#00AFBB")+
+
+  scale_x_continuous(breaks = seq(2000, 2010, 1))+
+  scale_y_continuous(breaks = seq(0, 30000, 10000), limits = c(0, 30000))+
+  theme_classic()+
+    labs(title = "Coho",
+       x = "",
+       y = "")+
+  theme(plot.title = element_text(hjust = 1),
+        legend.position = "none")
+
+#Jack Coho
+p3<- ggplot(cohoj_annual, aes(x = yearly, y = sum)) +
+    geom_line(color = "#C4961A", fill = "#C4961A")+
+  scale_x_continuous(breaks = seq(2000, 2010, 1))+
+  scale_y_continuous(breaks = seq(0, 3000, 1000))+
+  theme_classic() +
+    labs(title = "Jack Coho",
+       x = "Year",
+       y = "")+
+  theme(plot.title = element_text(hjust = 1),
+        legend.position = "none")
+
+ylabs <- "Total Fish Count"
+
+p1/p2/p3 + plot_layout(heights = c(5, 5, 5)) + 
+  plot_annotation(
+    title = 'Annual Fish Count, 2000-2010',
+    theme = theme(plot.title = element_text(size = 14, hjust = 0.5)))
+grid::grid.draw(grid::textGrob(ylabs, x = 0.02, rot = 90))
+
+
+```
+###### *Fig 3:* Total annual fish count through Willamette Falls fish ladder from 2000-2010. Y-axis scales are not the same between figures. (Data: Columbia River DART) 
+
+
+
+
+
+
+
+
