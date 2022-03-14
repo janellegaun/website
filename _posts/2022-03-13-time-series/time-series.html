@@ -1482,7 +1482,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 hide
 </summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span>, warning<span class='op'>=</span> <span class='cn'>FALSE</span>, message <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span>, warning<span class='op'>=</span> <span class='cn'>FALSE</span>, message <span class='op'>=</span> <span class='cn'>FALSE</span>, fig.fullwidth <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/sfirke/janitor'>janitor</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span>
@@ -1522,15 +1522,18 @@ hide
 </details>
 </div>
 <h1 id="overview">Overview</h1>
-<p>This report explores fish passage counts of Coho salmon (<em>Oncorhynchus kisutch</em>) and Steelhead salmon (<em>Oncorhynchus mykiss</em>) at Willemette Falls for a ten year period beginning Jan 1, 2000. The Willamette Falls in Oregon are the site of a a large hydropower facility with a fish passage structure to facilitate migration along the river. The report looks at annual and seasonal trends in Steelhead, Coho, and jack Coho passage through Willamette Falls. Jacks are male salmon that return to spawn a year earlier than other adult Coho salmon.</p>
+<p>In this report I use <code>feasts</code> and <code>lubridate</code> to analyze population dynamics through time. This analysis explores fish passage counts of Coho salmon (<em>Oncorhynchus kisutch</em>) and Steelhead salmon (<em>Oncorhynchus mykiss</em>) at Willemette Falls for a ten year period beginning Jan 1, 2000. The Willamette Falls in Oregon are the site of a a large hydropower facility with a fish passage structure to facilitate migration along the river. The report looks at annual and seasonal trends in Steelhead, Coho, and jack Coho passage through Willamette Falls. Jacks are male salmon that return to spawn a year earlier than other adult Coho salmon.</p>
 <p><font size = "5"> <strong>Data:</strong> </font size = "5"> Columbia River Basin Data Access in Real Time. Adult Passage (database). Accessed: March 8, 2022. <a href="http://www.cbr.washington.edu/dart/query/adult_graph_text" class="uri">http://www.cbr.washington.edu/dart/query/adult_graph_text</a></p>
 <h1 id="data-analysis">Data Analysis</h1>
 <h3 id="original-time-series">Original Time Series</h3>
+<h4 id="take-aways">Take Aways</h4>
 <ul>
 <li><p>Coho salmon counts are increasing with time though jack salmon counts appear to be remaining stable</p></li>
 <li><p>Coho salmon appear to pass through the fish passage approx. once a year during a discreet period</p></li>
 <li><p>Steelhead salmon have much less discrete time periods when they move through the fish passage though they appear to have a seasonal trend</p></li>
 </ul>
+<h4 id="analysis">Analysis</h4>
+<p>In this section I explore the daily count of fish through the Willamette Falls Fish Ladder. I utilize <code>lubridate::mdy</code> to convert the data column into date format. I then plot each species seperately with two colors for Coho salmon to represent jack and adult salmon passage.</p>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -1586,11 +1589,14 @@ hide
 </div>
 <h6 id="fig-1-daily-count-of-steelhead-and-coho-salmon-at-willamette-falls-fish-passage-in-oregon-between-january-1-2000-and-dec-31-2010.-coho-salmon-show-counts-of-jack-salmon-yellow-which-return-one-year-earlier-than-other-adult-salmon-blue-to-spawn.-y-axis-are-different-scales-data-columbia-river-dart"><em>Fig 1:</em> Daily count of Steelhead and Coho salmon at Willamette falls fish passage in Oregon between January 1, 2000 and Dec 31, 2010. Coho salmon show counts of jack salmon (yellow) which return one year earlier than other adult salmon (blue) to spawn. Y-axis are different scales (Data: Columbia River DART)</h6>
 <h3 id="seasonpolots">Seasonpolots</h3>
+<h4 id="take-aways-1">Take Aways</h4>
 <ul>
 <li><p>Steelhead salmon move through the fish passage in spring and early summer and have a much longer period of travel along the river</p></li>
 <li><p>Coho and jack Coho salmon migrate through the fish passage in late summer. Fish passage counts peak in September.</p></li>
 <li><p>Coho salmon appear to be more abundant in later years of the observation period</p></li>
 </ul>
+<h4 id="analysis-1">Analysis</h4>
+<p>In this section I use <code>feasts::gg_season</code> to explore seasonal trends in fish passage. The function <code>feasts::index_by</code> acts similarly to <code>group_by</code> but groups based on the date. In this analysis I will group by month and year to find the monthly average of fish passages each year. When these values are plotted using <code>gg_season</code> they display the average daily fish passage per month and create time series for each year of analysis.</p>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -1604,13 +1610,11 @@ hide
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>coho</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> 
 
 <span class='va'>cohoj_month</span> <span class='op'>&lt;-</span> <span class='va'>fish_ts</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/index-by.html'>index_by</a></span><span class='op'>(</span>yr_mo <span class='op'>=</span> <span class='op'>~</span><span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> <span class='co'>#equivalent of doing group_by for normal dataframe</span>
-  <span class='co'>#dot shows to apply to this dataset</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/index-by.html'>index_by</a></span><span class='op'>(</span>yr_mo <span class='op'>=</span> <span class='op'>~</span><span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>jack_coho</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> 
 
 <span class='va'>sh_month</span> <span class='op'>&lt;-</span> <span class='va'>fish_ts</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/index-by.html'>index_by</a></span><span class='op'>(</span>yr_mo <span class='op'>=</span> <span class='op'>~</span><span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> <span class='co'>#equivalent of doing group_by for normal dataframe</span>
-  <span class='co'>#dot shows to apply to this dataset</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/index-by.html'>index_by</a></span><span class='op'>(</span>yr_mo <span class='op'>=</span> <span class='op'>~</span><span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>steelhead</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> 
 
 <span class='co'>#plot seasonal datasets</span>
@@ -1664,18 +1668,21 @@ hide
 </div>
 <h6 id="fig-2-mean-monthly-count-of-steelhead-coho-and-jack-coho-salmon-at-the-willamette-falls-fish-passage-between-112000-and-12312010.-note-that-the-y-axis-scale-of-jack-coho-is-different-than-the-other-two-data-columbia-river-dart"><em>Fig 2:</em> Mean monthly count of Steelhead, Coho and jack Coho salmon at the Willamette Falls fish passage between 1/1/2000 and 12/31/2010. Note that the y-axis scale of jack Coho is different than the other two (Data: Columbia River DART)</h6>
 <h3 id="annual-count-by-species">Annual Count by species</h3>
+<h4 id="take-aways-2">Take Aways</h4>
 <ul>
 <li><p>Coho salmon counts significantly increased in 2009 and 2010 though futher analysis will be needed to understand if this is a long-term trend</p></li>
 <li><p>Annual jack Coho counts appear to have a cyclical pattern</p></li>
 <li><p>Steelhead salmon populations remained steady from 2000-2010 and experienced no significant changes in population over the 10 year period</p></li>
 </ul>
+<h4 id="analysis-2">Analysis</h4>
+<p>This section indexes fish passage by year (<code>feasts::index_by()</code>) to find the total fish passages by species. Analyzing data on an annual basis can shed light on long-term population dynamics.</p>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
 hide
 </summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>#wrnagle data </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>#wrangle data </span>
 <span class='co'>#coho</span>
 <span class='va'>coho_annual</span> <span class='op'>&lt;-</span> <span class='va'>fish_ts</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/index-by.html'>index_by</a></span><span class='op'>(</span>yearly <span class='op'>=</span> <span class='op'>~</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/year.html'>year</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 

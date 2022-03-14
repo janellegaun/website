@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r setup, include=TRUE, warning=FALSE, message=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning= FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning= FALSE, message = FALSE, fig.fullwidth = TRUE)
 library(tidyverse)
 library(janitor)
 library(here)
@@ -42,7 +42,7 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 ```
 
 # Overview 
-This report explores fish passage counts of Coho salmon (*Oncorhynchus kisutch*) and Steelhead salmon (*Oncorhynchus mykiss*) at Willemette Falls for a ten year period beginning Jan 1, 2000. The Willamette Falls in Oregon are the site of a a large hydropower facility with a fish passage structure to facilitate migration along the river. The report looks at annual and seasonal trends in Steelhead, Coho, and jack Coho passage through Willamette Falls. Jacks are male salmon that return to spawn a year earlier than other adult Coho salmon. 
+In this report I use `feasts` and `lubridate` to analyze population dynamics through time. This analysis explores fish passage counts of Coho salmon (*Oncorhynchus kisutch*) and Steelhead salmon (*Oncorhynchus mykiss*) at Willemette Falls for a ten year period beginning Jan 1, 2000. The Willamette Falls in Oregon are the site of a a large hydropower facility with a fish passage structure to facilitate migration along the river. The report looks at annual and seasonal trends in Steelhead, Coho, and jack Coho passage through Willamette Falls. Jacks are male salmon that return to spawn a year earlier than other adult Coho salmon. 
 
 <font size = "5"> **Data:** </font size = "5"> Columbia River Basin Data Access in Real Time. Adult Passage (database). Accessed: March 8, 2022.  http://www.cbr.washington.edu/dart/query/adult_graph_text
 
@@ -51,11 +51,16 @@ This report explores fish passage counts of Coho salmon (*Oncorhynchus kisutch*)
 
 ### Original Time Series
 
+#### Take Aways
 - Coho salmon counts are increasing with time though jack salmon counts appear to be remaining stable
 
 - Coho salmon appear to pass through the fish passage approx. once a year during a discreet period
 
 - Steelhead salmon have much less discrete time periods when they move through the fish passage though they appear to have a seasonal trend
+
+#### Analysis 
+
+In this section I explore the daily count of fish through the Willamette Falls Fish Ladder. I utilize `lubridate::mdy` to convert the data column into date format. I then plot each species seperately with two colors for Coho salmon to represent jack and adult salmon passage. 
 
 ```{r create timeseries data}
 #change date column from 'character' to 'mdy' format date
@@ -99,11 +104,15 @@ sh_ts/co_ts
 
 ### Seasonpolots 
 
+#### Take Aways 
 - Steelhead salmon move through the fish passage in spring and early summer and have a much longer period of travel along the river 
 
 - Coho and jack Coho salmon migrate through the fish passage in late summer. Fish passage counts peak in September. 
 
 - Coho salmon appear to be more abundant in later years of the observation period
+
+#### Analysis
+In this section I use `feasts::gg_season` to explore seasonal trends in fish passage. The function `feasts::index_by` acts similarly to `group_by` but groups based on the date. In this analysis I will group by month and year to find the monthly average of fish passages each year. When these values are plotted using `gg_season` they display the average daily fish passage per month and create time series for each year of analysis. 
 
 ```{r seasonplots}
 #create seasonal datasets
@@ -113,13 +122,11 @@ coho_month <- fish_ts %>%
   summarize(mean = mean(coho, na.rm = TRUE)) 
 
 cohoj_month <- fish_ts %>% 
-  index_by(yr_mo = ~yearmonth(.)) %>% #equivalent of doing group_by for normal dataframe
-  #dot shows to apply to this dataset
+  index_by(yr_mo = ~yearmonth(.)) %>% 
   summarize(mean = mean(jack_coho, na.rm = TRUE)) 
 
 sh_month <- fish_ts %>% 
-  index_by(yr_mo = ~yearmonth(.)) %>% #equivalent of doing group_by for normal dataframe
-  #dot shows to apply to this dataset
+  index_by(yr_mo = ~yearmonth(.)) %>% 
   summarize(mean = mean(steelhead, na.rm = TRUE)) 
 
 #plot seasonal datasets
@@ -171,14 +178,18 @@ grid::grid.draw(grid::textGrob(ylab, x = 0.02, rot = 90))
 
 ### Annual Count by species 
 
+#### Take Aways
 - Coho salmon counts significantly increased in 2009 and 2010 though futher analysis will be needed to understand if this is a long-term trend
 
 - Annual jack Coho counts appear to have a cyclical pattern 
 
 - Steelhead salmon populations remained steady from 2000-2010 and experienced no significant changes in population over the 10 year period
 
+#### Analysis
+This section indexes fish passage by year (`feasts::index_by()`) to find the total fish passages by species. Analyzing data on an annual basis can shed light on long-term population dynamics. 
+
 ```{r annual counts}
-#wrnagle data 
+#wrangle data 
 #coho
 coho_annual <- fish_ts %>% 
   index_by(yearly = ~year(.)) %>% 
