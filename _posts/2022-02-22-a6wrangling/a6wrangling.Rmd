@@ -7,7 +7,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE, message= FALSE, warning= FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = F)
 library(tidyverse)
 library(here)
@@ -26,7 +26,9 @@ lake_levels <- read_csv(here("data", "mono_lake_annual_levels.csv"), skip = 5) %
   clean_names()
 ```
 
-Mono Lake is a terminal lake in California that is supported by freshwater inflows from nearby rivers. Water diversions from the rivers reduced the inflows to the lake. As a result, the salinity in the lake has been increasing as lake levels drop. Courts have mandated that a minimum elevation to ensure proper ecosystem function. 
+Mono Lake is a terminal lake in California that is supported by freshwater inflows from nearby rivers. Water diversions from the rivers reduced the inflows to the lake. As a result, the salinity in the lake has been increasing as lake levels drop. Critical ecosystem functions are challenged threatened if lake surface elevations continue to fall. 
+
+My data visualization approach is to find simplicity, letting the data speak for itself. Parsing away the unnecessary details allows the reader to focus on critical trends. 
 
 ```{r, fig.width=10}
 ggplot(lake_levels, aes(x= year, y= lake_level_feet_above_sea_level))+
