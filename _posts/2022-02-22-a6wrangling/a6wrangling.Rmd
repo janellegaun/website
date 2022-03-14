@@ -1,5 +1,5 @@
 ---
-title: "Time Series: Mono Lake"
+title: "Data Visualization: Mono Lake"
 output:
   distill::distill_article:
     self_contained: false
@@ -26,6 +26,7 @@ lake_levels <- read_csv(here("mono_lake_annual_levels.csv"), skip = 5) %>%
   clean_names()
 ```
 
+Mono Lake is a terminal lake in California that is supported by freshwater inflows from nearby rivers. Water diversions from the rivers reduced the inflows to the lake. As a result, the salinity in the lake has been increasing as lake levels drop. Courts have mandated that a minimum elevation to ensure proper ecosystem function. 
 
 ```{r, fig.width=10}
 ggplot(lake_levels, aes(x= year, y= lake_level_feet_above_sea_level))+
@@ -95,9 +96,8 @@ ggplot(lake_levels, aes(x= year, y= lake_level_feet_above_sea_level))+
         axis.line= element_line(size = 1))
   
 ```
+###### **Figure 1**: The figure depicts the water levels in Mono Lake (CA) from 1850- 2017 and the lake levels of three critical thresholds: the state-determined target to meet ecological function, the emergence of land bridges that connect lake islands to the shore, and salinity concentrations that limit brine shrimp. Also noted are the dates of LA water diversions (1941) and the declaration of a minimum lake level by the State Water Resources Control Board (1994). 
 
-**Figure 1**: The figure depicts the water levels in Mono Lake (CA) from 1850- 2017 and the lake levels of three critical thresholds: the state-determined target to meet ecological function, the emergence of land bridges that connect lake islands to the shore, and salinity concentrations that limit brine shrimp. Also noted are the dates of LA water diversions (1941) and the declaration of a minimum lake level by the State Water Resources Control Board (1994). Data: 
-library(ggpubr)
-```
+
 
 

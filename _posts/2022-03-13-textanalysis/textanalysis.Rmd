@@ -23,7 +23,6 @@ library(plotly)
 This post explores work frequency and sentiment in the script of Star Wars Episode IV: A New Hope and visualized using a plot and a wordcloud. A sentiment analysis using the "bing" lexicon is then used to determine the mean sentiment per page. Sentiment is plotted with key plots points. 
 
 
-
 ```{r data wrangling for text analysis}
 sw_script <- pdf_text(here("data", "starwars_fourth3_76.pdf"))
 
